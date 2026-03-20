@@ -11,15 +11,15 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "https://c.animaapp.com/mmslviois4xSNv/img/generated-image-1773609520333.png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiNENDlFMzAiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iQ29ybW9yYW50IEdhcm1vbmQsIHNlcmlmIiBmb250LXNpemU9Ijc4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWxlbmd0aD0iMTUwIj5NPC90ZXh0Pgo8L3N2Zz4K",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "https://c.animaapp.com/mmslviois4xSNv/img/generated-image-1773609520333.png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiNENDlFMzAiLz4KPHRleHQgeD0iMjU2IiB5PSIzMDAiIHN0eWxlPSJ0ZXh0LWFuY2hvcjogbWlkZGxlOyIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iQ29ybW9yYW50IEdhcm1vbmQsIHNlcmlmIiBmb250LXNpemU9IjI0MCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzAwMDAwMCIgdGV4dC1sZW5ndGg9IjQwMCI+TTwvdGV4dD4KPC9zdmc+Cg==",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
@@ -34,14 +34,20 @@
       "short_name": "Portal",
       "description": "Access your client dashboard",
       "url": "/portal",
-      "icons": [{ "src": "https://c.animaapp.com/mmslviois4xSNv/img/generated-image-1773609520333.png", "sizes": "192x192" }]
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiNENDlFMzAiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iQ29ybW9yYW50IEdhcm1vbmQsIHNlcmlmIiBmb250LXNpemU9Ijc4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWxlbmd0aD0iMTUwIj5NPC90ZXh0Pgo8L3N2Zz4K",
+        "sizes": "192x192"
+      }]
     },
     {
       "name": "AI Chat",
       "short_name": "AI Chat",
       "description": "Chat with our AI assistant",
       "url": "/ai-chat",
-      "icons": [{ "src": "https://c.animaapp.com/mmslviois4xSNv/img/generated-image-1773609520333.png", "sizes": "192x192" }]
+      "icons": [{
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiNENDlFMzAiLz4KPHRleHQgeD0iOTYiIHk9IjExMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuM2VtIiBmb250LWZhbWlseT0iQ29ybW9yYW50IEdhcm1vbmQsIHNlcmlmIiBmb250LXNpemU9Ijc4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMDAwMDAwIiB0ZXh0LWxlbmd0aD0iMTUwIj5NPC90ZXh0Pgo8L3N2Zz4K",
+        "sizes": "192x192"
+      }]
     }
   ]
 }

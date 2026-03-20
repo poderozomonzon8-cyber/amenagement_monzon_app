@@ -4,7 +4,7 @@ import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import ThreeDContainer from "@/components/ThreeDContainer";
 import { ArrowUpRight, Play } from "@phosphor-icons/react";
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/lib/anima-supabase-adapter";
 
 const FILTERS = ["All", "Construction", "Renovation", "Landscaping", "Maintenance"];
 

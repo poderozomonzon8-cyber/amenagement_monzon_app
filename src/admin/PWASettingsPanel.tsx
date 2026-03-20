@@ -7,7 +7,7 @@ import {
   WarningCircle, Broadcast, HardDrives, Spinner,
   Download,
 } from "@phosphor-icons/react";
-import { usePWA } from "@/hooks/usePWA";
+// PWA Service Worker removed - no usePWA
 
 /* ── Stat Tile ── */
 function StatTile({ icon: Icon, label, value, accent = false }: { icon: any; label: string; value: string; accent?: boolean }) {
@@ -75,8 +75,8 @@ function CacheStats() {
 
 /* ── Main Panel ── */
 export default function PWASettingsPanel() {
-  const { isInstallable, isInstalled, isOnline, isUpdating, swStatus, promptInstall, skipWaiting, swRegistration } = usePWA();
   const [cleared, setCleared] = useState(false);
+  // PWA SW removed
 
   const clearCache = async () => {
     const keys = await caches.keys();

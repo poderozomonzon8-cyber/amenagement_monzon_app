@@ -5,7 +5,7 @@ import PageHero from "@/components/PageHero";
 import ContactSection from "@/components/ContactSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import ThreeDContainer from "@/components/ThreeDContainer";
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/lib/anima-supabase-adapter";
 import { ArrowUpRight, Check, ArrowRight, ImageSquare } from "@phosphor-icons/react";
 
 /* ─── SECTION: Material Showcase ─── */

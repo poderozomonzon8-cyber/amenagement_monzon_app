@@ -8,7 +8,8 @@ import {
   ArrowCounterClockwise, X, User, Chat, Briefcase,
   Bell, SignOut, PencilSimple, FloppyDisk, CalendarBlank,
 } from "@phosphor-icons/react";
-import { useAuth, useQuery, useMutation } from "@animaapp/playground-react-sdk";
+import { useAppAuth } from "@/contexts/AuthContext";
+import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
 
 const STATUS_STYLES: Record<string, string> = {
   draft:      "bg-gray-100 text-gray-500",

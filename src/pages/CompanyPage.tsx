@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/lib/anima-supabase-adapter";
 import { Buildings, UsersThree, Trophy, Leaf, Star, Target, RocketLaunch, Heart, Clock, Medal } from "@phosphor-icons/react";
 
 const FALLBACK_SECTIONS = [

@@ -24,14 +24,7 @@ const queryClient = new QueryClient({
   },
 });
 
-/* Register Service Worker for PWA */
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/sw.js", { scope: "/" })
-      .catch((err) => console.warn("[PWA] SW registration error:", err));
-  });
-}
+/* PWA Service Worker removed */
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 <React.StrictMode>

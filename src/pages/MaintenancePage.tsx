@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { useQuery, useMutation } from "@animaapp/playground-react-sdk";
+import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
 import { Check, ShoppingCart, Repeat, Buildings, Leaf, Snowflake, Sun, Lightning, House, ArrowUpRight, Star } from "@phosphor-icons/react";
 import { useAppAuth } from "@/contexts/AuthContext";
 

@@ -3,7 +3,7 @@ import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PlaceholderPanel from "@/components/PlaceholderPanel";
 import { ArrowUpRight, Article } from "@phosphor-icons/react";
-import { useQuery } from "@animaapp/playground-react-sdk";
+import { useQuery } from "@/lib/anima-supabase-adapter";
 
 const FALLBACK_POSTS = [
   { id: "b1", title: "5 Trends in Modern Construction (2024)",   thumbnail: "https://c.animaapp.com/mmslviois4xSNv/img/ai_3.png", publishedDate: new Date("2024-03-01"), content: "" },

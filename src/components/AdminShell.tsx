@@ -17,7 +17,7 @@ import {
 import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
 import { useAppAuth } from "@/contexts/AuthContext";
 import { useNotifications } from "@/contexts/NotificationContext";
-import { usePWA } from "@/hooks/usePWA";
+// import { usePWA } from "@/hooks/usePWA";
 import BillingPanel from "@/admin/BillingPanel";
 import EconomicDashboardPanel from "@/admin/EconomicDashboardPanel";
 import ExpenseIncomePanel from "@/admin/ExpenseIncomePanel";
@@ -2152,10 +2152,7 @@ function NotificationBell({ setActiveTab }: { setActiveTab: (t: string) => void 
 }
 
 /* ── PWA Install Banner ── */
-function PWAInstallBanner() {
-  const { isInstallable, isUpdating, promptInstall, skipWaiting } = usePWA();
-  const [dismissed, setDismissed] = useState(false);
-  if (dismissed) return null;
+// PWAInstallBanner removed
 
   if (isUpdating) {
     return (
