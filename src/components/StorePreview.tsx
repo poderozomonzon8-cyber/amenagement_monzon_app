@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ShoppingBag, ArrowUpRight, Check } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+import { useQuery } from "@/lib/supabase";
 
 const FALLBACK_PRODUCTS = [
   { image: "https://c.animaapp.com/mmslviois4xSNv/img/ai_2.png", name: "Monzon Signature Tee",   price: "$45",  category: "Apparel" },

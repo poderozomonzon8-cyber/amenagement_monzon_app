@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { Check, ShoppingBag, ShoppingCart, X, ArrowUpRight, Tag, Star, Plus, Minus } from "@phosphor-icons/react";
-import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
+import { useQuery, useMutation } from "@/lib/supabase";
 import { useAppAuth } from "@/contexts/AuthContext";
 
 /* ── Fallback products ── */

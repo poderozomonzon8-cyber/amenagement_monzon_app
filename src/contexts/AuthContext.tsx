@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
-import { supabase, supabaseSignIn, supabaseSignOut, getUserProfile } from "@/lib/supabase";
+import { supabase, supabaseSignIn, supabaseSignOut, getUserProfile } from "../lib/supabase";
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 /* ─────────────────────────────────────────────
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsPending(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ? { 
         id: session.user.id, 
         email: session.user.email!, 
@@ -102,26 +102,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-const logout = useCallback(async () => {
-  try {
-    console.log('[Auth] Starting logout...');
-    
-    // Supabase logout
-    const { error } = await supabaseSignOut();
-    if (error) throw error;
-    console.log('[Auth] Supabase logout complete');
+  const logout = async () => {
+    const result = await supabase.auth.signOut();
 
-    // Clear state
+    if (result?.error) {
+      console.error("Logout error:", result.error);
+    }
+
+    localStorage.removeItem("user_role");
     setUser(null);
-    setRole("client");
-    setProfile(null);
-    
-  } catch (error) {
-    console.error('[Auth] Logout error:', error);
-  }
-}, []);
+  };
 
-const [role, setRole] = useState<Role>("client");
+  const [role, setRole] = useState<Role>("client");
   const [profile, setProfile] = useState<any>(null);
   
   const updateProfile = async (userId: string) => {
@@ -160,6 +152,19 @@ const [role, setRole] = useState<Role>("client");
 
 export function useAppAuth(): AuthContextType {
   const ctx = useContext(AuthCtx);
-  if (!ctx) throw new Error("useAppAuth must be inside AuthProvider");
+  if (!ctx) throw new Error("useAppAuth must be used inside AuthProvider");
   return ctx;
 }
+
+export function setStoredRole(role: string) {
+  localStorage.setItem("user_role", role);
+}
+
+export function getStoredRole() {
+  return localStorage.getItem("user_role");
+}
+
+export function clearStoredRole() {
+  localStorage.removeItem("user_role");
+}
+

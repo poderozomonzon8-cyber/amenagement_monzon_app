@@ -1,4 +1,6 @@
 import { Helmet } from "react-helmet-async";
+import { FadeIn, StaggerContainer, StaggerItem, ScrollFadeIn, HeroTimeline } from "@/components/animations/MotionWrappers";
+import { motion } from 'framer-motion';
 import HeaderNav from "@/components/HeaderNav";
 import HeroSection from "@/components/HeroSection";
 import ThreeDContainer from "@/components/ThreeDContainer";
@@ -22,15 +24,33 @@ export default function HomePage() {
         <link rel="canonical" href="https://amenagement-monzon.com/" />
       </Helmet>
       <HeaderNav />
-      <main>
-        <HeroSection />
-        <ThreeDContainer />
-        <ServicesSection />
-        <PortfolioSection />
-        <StorePreview />
-        <CommunitySection />
-        <ContactSection />
-        <ClientPortalBanner />
+<main>
+        <StaggerContainer>
+          <StaggerItem>
+            <HeroSection />
+          </StaggerItem>
+          <ScrollFadeIn>
+            <ThreeDContainer />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <ServicesSection />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <PortfolioSection />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <StorePreview />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <CommunitySection />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <ContactSection />
+          </ScrollFadeIn>
+          <ScrollFadeIn>
+            <ClientPortalBanner />
+          </ScrollFadeIn>
+        </StaggerContainer>
       </main>
       <Footer />
       <AIChatWidget />

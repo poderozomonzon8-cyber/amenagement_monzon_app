@@ -9,7 +9,7 @@ import {
   Bell, SignOut, PencilSimple, FloppyDisk, CalendarBlank,
 } from "@phosphor-icons/react";
 import { useAppAuth } from "@/contexts/AuthContext";
-import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
+import { useQuery, useMutation } from "@/lib/supabase";
 
 const STATUS_STYLES: Record<string, string> = {
   draft:      "bg-gray-100 text-gray-500",

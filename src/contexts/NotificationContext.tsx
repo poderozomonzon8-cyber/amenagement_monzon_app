@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { useQuery, useMutation } from "@/lib/anima-supabase-adapter";
+import { useQuery, useMutation } from "@/lib/supabase";
 import { useAppAuth } from "@/contexts/AuthContext";
 
 /* ══════════════════════════════════════════

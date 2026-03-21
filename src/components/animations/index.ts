@@ -5,3 +5,4 @@ export { SubscriptionPulse } from "./SubscriptionPulse";
 export { RevealSection, RevealStaggerGroup } from "./RevealSection";
 export { IconBounce } from "./IconBounce";
 export { PaverRotate } from "./PaverRotate";
+export * from "./MotionWrappers";

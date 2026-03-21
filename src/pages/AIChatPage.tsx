@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { ScrollFadeIn, StaggerContainer, StaggerItem, HoverCard } from "@/components/animations";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { Robot, Sparkle, Lock, ChartBar } from "@phosphor-icons/react";
@@ -21,21 +22,27 @@ export default function AIChatPage() {
         <div className="max-w-4xl mx-auto px-6">
 
           {/* Info cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12">
-            {[
-              { icon: Robot, title: "Smart Answers", desc: "Ask about services, process, materials, timelines in plain English or French.", color: "bg-charcoal/5 text-charcoal" },
-              { icon: Lock, title: "No Pricing", desc: "The AI never provides prices — all estimates go through our team for accuracy.", color: "bg-gold/10 text-gold-dark" },
-              { icon: ChartBar, title: "Admin AI", desc: "A separate AI in your admin panel analyzes your financial data and trends.", color: "bg-blue-50 text-blue-600" },
-            ].map(item => (
-              <div key={item.title} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center">
-                <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center mx-auto mb-3`}>
-                  <item.icon size={20} weight="fill" />
-                </div>
-                <p className="font-headline font-semibold text-sm text-charcoal mb-2">{item.title}</p>
-                <p className="font-sans text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+          <StaggerContainer>
+            <StaggerItem>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12">
+                {[
+                  { icon: Robot, title: "Smart Answers", desc: "Ask about services, process, materials, timelines in plain English or French.", color: "bg-charcoal/5 text-charcoal" },
+                  { icon: Lock, title: "No Pricing", desc: "The AI never provides prices — all estimates go through our team for accuracy.", color: "bg-gold/10 text-gold-dark" },
+                  { icon: ChartBar, title: "Admin AI", desc: "A separate AI in your admin panel analyzes your financial data and trends.", color: "bg-blue-50 text-blue-600" },
+                ].map(item => (
+                  <HoverCard key={item.title}>
+                    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center hover:shadow-lg transition-shadow">
+                      <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center mx-auto mb-3`}>
+                        <item.icon size={20} weight="fill" />
+                      </div>
+                      <p className="font-headline font-semibold text-sm text-charcoal mb-2">{item.title}</p>
+                      <p className="font-sans text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </HoverCard>
+                ))}
               </div>
-            ))}
-          </div>
+            </StaggerItem>
+          </StaggerContainer>
 
           {/* Chat embed hint */}
           <div className="bg-white border border-gray-200 rounded-3xl p-10 shadow-sm text-center">

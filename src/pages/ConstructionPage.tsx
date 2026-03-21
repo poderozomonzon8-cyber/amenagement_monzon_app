@@ -5,7 +5,7 @@ import PageHero from "@/components/PageHero";
 import ContactSection from "@/components/ContactSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import ThreeDContainer from "@/components/ThreeDContainer";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+import { useQuery } from "@/lib/supabase";
 import { ArrowUpRight, Check, Shield, Certificate, Scales, WarningDiamond } from "@phosphor-icons/react";
 
 /* ─── CASE STUDIES ─── */

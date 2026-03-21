@@ -1,4 +1,4 @@
-import { useQuery } from "@animaapp/playground-react-sdk";
+// import { useQuery } from "@animaapp/playground-react-sdk"; // REMOVED - Anima SDK
 import { Star, ArrowUpRight } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 

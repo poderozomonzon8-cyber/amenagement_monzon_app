@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { InstagramLogo, YoutubeLogo, TiktokLogo, ArrowUpRight, Heart, Eye } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+import { useQuery } from "@/lib/supabase";
 
 const FALLBACK_POSTS = [
   { image: "https://c.animaapp.com/mmslviois4xSNv/img/ai_5.png", platform: "Instagram", handle: "@amenagement_monzon", likes: "1.2K", views: "14K" },

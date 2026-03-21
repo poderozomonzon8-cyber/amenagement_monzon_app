@@ -5,7 +5,7 @@
  * survive page refreshes.
  */
 import { useMemo } from "react";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+// import { useQuery } from "@/lib/anima-supabase-adapter"; // REMOVED - Anima file deleted
 import { THEME_NAV_CONFIGS, ThemeNavConfig, ThemeNavLink, ThemeSectionDescriptor } from "@/config/ThemeNavConfig";
 
 export type NavOverrideRow = {
@@ -68,20 +68,12 @@ export function applyOverride(
  * Falls back to the static config if no DB override exists.
  */
 export function useNavOverrides(): Map<string, ThemeNavConfig> {
-  const { data: overrides, isPending } = useQuery("ThemeNavOverride" as any);
-
+  // Static fallback - DB overrides disabled after Anima cleanup
   return useMemo(() => {
     const map = new Map<string, ThemeNavConfig>();
     for (const baseConfig of THEME_NAV_CONFIGS) {
-      if (!isPending && overrides && Array.isArray(overrides)) {
-        const row = (overrides as NavOverrideRow[]).find(r => r.presetId === baseConfig.presetId);
-        if (row) {
-          map.set(baseConfig.presetId, applyOverride(baseConfig, row));
-          continue;
-        }
-      }
       map.set(baseConfig.presetId, baseConfig);
     }
     return map;
-  }, [overrides, isPending]);
+  }, []);
 }

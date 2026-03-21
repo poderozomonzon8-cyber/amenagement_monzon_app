@@ -4,7 +4,7 @@ import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import ThreeDContainer from "@/components/ThreeDContainer";
 import { ArrowUpRight, Play } from "@phosphor-icons/react";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+import { useQuery } from "@/lib/supabase";
 
 const FILTERS = ["All", "Construction", "Renovation", "Landscaping", "Maintenance"];
 

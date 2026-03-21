@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { ScrollFadeIn } from "@/components/animations";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import ServicesSection from "@/components/ServicesSection";
@@ -21,7 +22,9 @@ export default function ServicesPage() {
           title="Our Services"
           subtitle="A full spectrum of premium property services, delivered with the precision and artistry that defines Aménagement Monzon."
         />
-        <ServicesSection />
+        <ScrollFadeIn>
+          <ServicesSection />
+        </ScrollFadeIn>
 
         {/* Optional 3D showcase */}
         <ThreeDContainer />

@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { FadeInUp, ScrollFadeIn, StaggerContainer, StaggerItem } from "@/components/animations/MotionWrappers";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PlaceholderPanel from "@/components/PlaceholderPanel";
@@ -29,18 +30,29 @@ export default function AboutPage() {
         <PageHero eyebrow="Our Story" title="About Aménagement Monzon" subtitle="Where architectural precision meets cinematic storytelling. Every project, a masterpiece." />
 
         {/* Stats */}
-        <section className="py-16 bg-white">
-          <div className="max-w-screen-xl mx-auto px-6 md:px-10">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {STATS.map((s, i) => (
-                <div key={i} className="text-center p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors">
-                  <p className="font-headline font-bold text-4xl text-charcoal">{s.value}</p>
-                  <p className="font-sans text-sm text-gray-500 mt-2 uppercase tracking-wider">{s.label}</p>
-                </div>
-              ))}
+        <ScrollFadeIn>
+          <section className="py-16 bg-white">
+            <div className="max-w-screen-xl mx-auto px-6 md:px-10">
+              <StaggerContainer>
+                <StaggerItem>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    {STATS.map((s, i) => (
+                      <motion.div 
+                        key={i} 
+                        className="text-center p-8 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors group"
+                        whileHover={{ y: -4, scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                      >
+                        <p className="font-headline font-bold text-4xl text-charcoal">{s.value}</p>
+                        <p className="font-sans text-sm text-gray-500 mt-2 uppercase tracking-wider">{s.label}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </StaggerItem>
+              </StaggerContainer>
             </div>
-          </div>
-        </section>
+          </section>
+        </ScrollFadeIn>
 
         {/* Mission / Vision placeholders */}
         <section className="py-16 bg-gray-50">

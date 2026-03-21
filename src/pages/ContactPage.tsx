@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { ScrollFadeIn } from "@/components/animations";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import ContactSection from "@/components/ContactSection";
@@ -12,7 +13,9 @@ export default function ContactPage() {
       </Helmet>
       <PageShell>
         <PageHero eyebrow="Get In Touch" title="Contact Us" subtitle="Tell us about your vision and we'll craft a tailored plan that brings it to life." />
-        <ContactSection />
+        <ScrollFadeIn>
+          <ContactSection />
+        </ScrollFadeIn>
       </PageShell>
     </>
   );

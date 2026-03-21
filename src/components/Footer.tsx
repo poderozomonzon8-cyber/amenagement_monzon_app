@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { InstagramLogo, YoutubeLogo, FacebookLogo, TiktokLogo, ArrowUpRight } from "@phosphor-icons/react";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useQuery } from "@/lib/anima-supabase-adapter";
+import { useQuery } from "@/lib/supabase";
 
 const LINKS = {
   Company: [

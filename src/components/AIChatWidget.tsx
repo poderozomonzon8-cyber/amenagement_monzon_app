@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Robot, X, PaperPlaneTilt, CaretDown, Spinner } from "@phosphor-icons/react";
-import { useMutation } from "@/lib/anima-supabase-adapter";
+import { useMutation } from "@/lib/supabase";
 
 type Message = {
   id: string;

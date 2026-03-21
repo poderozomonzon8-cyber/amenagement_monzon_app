@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { PaperPlaneTilt, MapPin, Phone, EnvelopeSimple, CheckCircle } from "@phosphor-icons/react";
-import { useMutation } from "@/lib/anima-supabase-adapter";
+import { useMutation } from "@/lib/supabase";
 
 const PROJECT_TYPES = ["Construction","Renovation","Landscaping","Maintenance","Other"];
 
