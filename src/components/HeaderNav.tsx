@@ -3,14 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { List, X, ArrowUpRight, UserCircle, CaretDown } from "@phosphor-icons/react";
 import { useAppAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-// import { useQuery } from "@/lib/supabase"; // REMOVED
 import UserMenu from "@/components/auth/UserMenu";
 import LoginModal from "@/components/auth/LoginModal";
 import { WhichAreYourNeedsButton } from "@/components/ServiceSelector";
 import { DEFAULT_NAV_LINKS, ThemeNavLink } from "@/config/ThemeNavConfig";
 import { useNavOverrides } from "@/hooks/useNavOverride";
-import { useQuery } from "@tanstack/react-query";
-
 /* ── Collapsible desktop nav with a single dropdown ── */
 function DesktopNav({
   navLinks,
@@ -216,17 +213,23 @@ export default function HeaderNav() {
   const ctaHref  = resolvedNavConfig?.ctaHref  ?? "/contact";
 
   /* Theme-specific header styles */
-  const headerBg = liveTheme["--theme-header-bg"] ?? "hsl(220,22%,5%)";
-  const headerText = liveTheme["--theme-header-text"] ?? "hsl(0,0%,100%)";
-  const accentColor = themeSettings.headerIconColor || liveTheme["--theme-accent"] || "hsl(42,90%,52%)";
-  const logoColor = themeSettings.headerLogoColor || liveTheme["--theme-accent"] || "hsl(42,90%,52%)";
-  const headerShadow = themeSettings.headerShadow;
-  const headerBlur = themeSettings.headerBlur;
+  const [logoAssets, setLogoAssets] = useState<any[]>([]);
 
-  const { data: logoAssets } = useQuery("LogoAsset" as any);
-  const activeLightLogo = (logoAssets as any[])?.find((l: any) => l.type === "light" && l.active === "yes");
-  const activeDarkLogo  = (logoAssets as any[])?.find((l: any) => l.type === "dark"  && l.active === "yes");
+useEffect(() => {
+  async function loadLogos() {
+    const { data, error } = await supabase
+      .from("LogoAsset")
+      .select("*")
+      .order("createdAt", { ascending: true });
 
+    if (!error && data) setLogoAssets(data);
+  }
+
+  loadLogos();
+}, []);
+
+const activeLightLogo = logoAssets.find(l => l.type === "light" && l.active === "yes");
+const activeDarkLogo  = logoAssets.find(l => l.type === "dark"  && l.active === "yes");
   /* Maintenance theme has a light header */
   const isLightHeader = activePresetId === "maintenance-service";
   /* Use light logo on dark headers, dark logo on light (maintenance) header */

@@ -22,7 +22,7 @@ export default function CommunitySection() {
   const headerRef = useRef<HTMLDivElement>(null);
   const statsRef  = useRef<HTMLDivElement>(null);
 
-  // ⭐ Reemplazo moderno de useQuery
+  
   const [posts, setPosts] = useState<any[]>([]);
   const [isPending, setIsPending] = useState(true);
 

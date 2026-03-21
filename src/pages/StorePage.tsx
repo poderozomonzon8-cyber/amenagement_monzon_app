@@ -9,13 +9,6 @@ import {
   Plus,
   Minus,
 } from "@phosphor-icons/react";
-export default function StorePage() {
-  return (
-    <>
-      {/* ...todo el contenido de la tienda... */}
-    </>
-  );
-}
 
 /* ───────────────────────────────────────────────
    FALLBACK DATA

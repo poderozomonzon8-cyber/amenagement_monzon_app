@@ -63,7 +63,6 @@ export interface Database {
         Relationships: [];
       };
 
-      /* ⭐ ADD: profiles table */
       profiles: {
         Row: {
           id: string;
@@ -116,26 +115,6 @@ export const supabaseMutation = async (
     return newData;
   }
 };
-
-/* ─────────────────────────────────────────────
-   REACT QUERY STUBS
-────────────────────────────────────────────── */
-
-export function useQuery<T = any>(table: string) {
-  return {
-    data: [] as T[],
-    isPending: false,
-  };
-}
-
-export function useMutation(table: string) {
-  return {
-    create: async (data: any) => supabaseMutation(table, null, data),
-    update: async (id: string, data: any) => supabaseMutation(table, id, data),
-    remove: async (id: string) => supabaseMutation(table, id, { deleted: true }),
-    isPending: false,
-  };
-}
 
 /* ─────────────────────────────────────────────
    ⭐ USER PROFILE FETCHER (for AuthContext)

@@ -151,17 +151,55 @@ function DashboardPanel({ setActiveTab }: { setActiveTab: (t: string) => void })
 }
 
 function ContactsPreview() {
-  const { data: submissions, isPending } = useQuery("ContactSubmission", { orderBy: { createdAt: "desc" }, limit: 4 });
-  if (isPending) return <div className="flex justify-center py-6"><span className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" /></div>;
-  if (!submissions || submissions.length === 0) return <p className="font-sans text-sm text-gray-400 text-center py-4">No submissions yet.</p>;
+  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [isPending, setIsPending] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      const { data, error } = await supabase
+        .from("ContactSubmission")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(4);
+
+      if (!error && data) {
+        setSubmissions(data);
+      }
+
+      setIsPending(false);
+    }
+
+    load();
+  }, []);
+
+  if (isPending) {
+    return (
+      <div className="flex justify-center py-6">
+        <span className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!submissions || submissions.length === 0) {
+    return (
+      <p className="font-sans text-sm text-gray-400 text-center py-4">
+        No submissions yet.
+      </p>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-3">
       {submissions.map((s) => (
         <div key={s.id} className="flex items-center gap-3 text-sm">
           <Dot size={20} weight="fill" className="text-gold flex-shrink-0" />
           <div className="min-w-0">
-            <p className="font-sans text-xs font-medium text-charcoal truncate">{s.name}</p>
-            <p className="font-mono text-[10px] text-gray-400">{s.projectType || "General"}</p>
+            <p className="font-sans text-xs font-medium text-charcoal truncate">
+              {s.name}
+            </p>
+            <p className="font-mono text-[10px] text-gray-400">
+              {s.project_type || "General"}
+            </p>
           </div>
         </div>
       ))}

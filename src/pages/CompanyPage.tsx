@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { useQuery } from "@/lib/supabase";
+import { supabase } from "@/lib/supabaseClient";
 import { Buildings, UsersThree, Trophy, Leaf, Star, Target, RocketLaunch, Heart, Clock, Medal } from "@phosphor-icons/react";
-
 const FALLBACK_SECTIONS = [
   { section: "founder", title: "Silviol Monzon", subtitle: "Founder & CEO", content: "With over 15 years of combined experience in construction, renovation, and landscaping, Silviol Monzon founded Aménagement Monzon with a singular vision: to elevate every property into a masterpiece. Born in Montreal, Silviol grew up watching skilled tradespeople transform spaces, and developed a deep respect for craft, precision, and artistry from an early age.", photoUrl: "https://c.animaapp.com/mmslviois4xSNv/img/ai_2.png", active: "yes" },
   { section: "story", title: "Our Story", subtitle: "From a garage to a leading construction brand", content: "Aménagement Monzon began in 2015 with a single renovation project and a commitment to doing things differently. Today, we have completed over 250 projects across residential, commercial, and landscape categories — each one a testament to our relentless pursuit of excellence. Our journey from a small local contractor to a full-service property company is built on the trust of our clients and the skill of our people.", photoUrl: "https://c.animaapp.com/mmslviois4xSNv/img/ai_3.png", active: "yes" },
@@ -39,13 +38,32 @@ const AWARDS = [
 ];
 
 export default function CompanyPage() {
-  const { data: profiles } = useQuery("CompanyProfile");
-  const sections = (profiles && profiles.length > 0) ? profiles : FALLBACK_SECTIONS;
+  const [sections, setSections] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      const { data, error } = await supabase
+        .from("CompanyProfile")
+        .select("*")
+        .order("createdAt", { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        setSections(data);
+      } else {
+        setSections(FALLBACK_SECTIONS);
+      }
+    }
+
+    load();
+  }, []);
 
   const founder = sections.find(s => s.section === "founder");
   const story   = sections.find(s => s.section === "story");
   const mission = sections.find(s => s.section === "mission");
   const vision  = sections.find(s => s.section === "vision");
+
+  // ...resto de tu componente
+}
 
   return (
     <>
@@ -200,4 +218,4 @@ export default function CompanyPage() {
       </PageShell>
     </>
   );
-}
+

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import HeaderNav from "@/components/HeaderNav";
 import Footer from "@/components/Footer";
@@ -11,8 +11,7 @@ import {
   SignOut, PencilSimple, FloppyDisk, CalendarBlank,
 } from "@phosphor-icons/react";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useQuery, useMutation } from "@/lib/supabase";
+import { supabase } from "@/lib/supabaseClient";
 
 /* ─────────────────────────────────────────────
    STATUS + ICONS
@@ -259,9 +258,7 @@ export default function ClientPortalPage() {
   });
 
   const [messageDraft, setMessageDraft] = useState("");
-  const [messages, setMessages] = useState<
-    { id: string; text: string; ts: string; from: "client" | "support" }[]
-  >([
+  const [messages, setMessages] = useState([
     {
       id: "1",
       text: "Welcome to the client portal! Our team is available Mon–Fri 8am–5pm. Send us a message below.",
@@ -270,39 +267,56 @@ export default function ClientPortalPage() {
     },
   ]);
 
-  const { data: calEvents } = useQuery("CalendarEvent", {
-    orderBy: { startDate: "asc" },
-  });
+  const [calEvents, setCalEvents] = useState<any[]>([]);
+  const [docs, setDocs] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [docsLoading, setDocsLoading] = useState(true);
+  const [projLoading, setProjLoading] = useState(true);
 
-  const { data: docs, isPending: docsLoading } = useQuery("BillingDocument", {
-    orderBy: { createdAt: "desc" },
-  });
+  useEffect(() => {
+    async function load() {
+      // Calendar events
+      const cal = await supabase
+        .from("CalendarEvent")
+        .select("*")
+        .order("startDate", { ascending: true });
 
-  const { data: projects, isPending: projLoading } = useQuery("Project", {
-    orderBy: { createdAt: "desc" },
-  });
+      if (!cal.error && cal.data) setCalEvents(cal.data);
 
-  const { update: updateDoc } = useMutation("BillingDocument");
+      // Billing documents
+      const d = await supabase
+        .from("BillingDocument")
+        .select("*")
+        .order("createdAt", { ascending: false });
+
+      if (!d.error && d.data) setDocs(d.data);
+      setDocsLoading(false);
+
+      // Projects
+      const p = await supabase
+        .from("Project")
+        .select("*")
+        .order("createdAt", { ascending: false });
+
+      if (!p.error && p.data) setProjects(p.data);
+      setProjLoading(false);
+    }
+
+    load();
+  }, []);
+
+  // Update document mutation
+  async function updateDoc(id: string, payload: any) {
+    return await supabase
+      .from("BillingDocument")
+      .update(payload)
+      .eq("id", id);
+  }
 
   const safeDocs = docs ?? [];
-  const safeProj = projects ?? [];Perfecto Silvio — aquí viene **CLIENTPORTALPAGE.TSX — PARTE 2/3**, completamente compatible con la Parte 1 que ya pegaste.
+  const safeProj = projects ?? [];
 
-Esta parte incluye:
 
-- **Overview cinematográfico**
-- **Recent Documents premium**
-- **Quick Actions**
-- **Projects premium**
-- **Documents section**
-- **Payments section**
-
-Pégalo **justo después** de la Parte 1.
-
----
-
-# 🎬 **CLIENTPORTALPAGE.TSX — PARTE 2/3 (PÉGALO COMPLETO)**
-
-```tsx
   /* ─────────────────────────────────────────────
      FILTERED DOCS + STATS
   ────────────────────────────────────────────── */
@@ -1150,7 +1164,7 @@ Pégalo **justo después** de la Parte 1.
                                       })}
                                     </p>
                                   )}
-                                    
+
                                   {ev.linkedProjectName && (
                                     <p className="font-mono text-[10px] text-gray-400 mt-0.5">
                                       📁 {ev.linkedProjectName}

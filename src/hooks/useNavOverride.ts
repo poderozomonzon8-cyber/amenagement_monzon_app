@@ -3,10 +3,18 @@
  * Loads ThemeNavOverride records from the DB and merges them over the
  * static THEME_NAV_CONFIGS so that customised labels/hrefs/section order
  * survive page refreshes.
+ *
+ * After removing Anima + DB overrides, this hook now returns ONLY the
+ * static configs. It is clean, stable, and ready for future expansion.
  */
+
 import { useMemo } from "react";
-// import { useQuery } from "@/lib/anima-supabase-adapter"; // REMOVED - Anima file deleted
-import { THEME_NAV_CONFIGS, ThemeNavConfig, ThemeNavLink, ThemeSectionDescriptor } from "@/config/ThemeNavConfig";
+import {
+  THEME_NAV_CONFIGS,
+  ThemeNavConfig,
+  ThemeNavLink,
+  ThemeSectionDescriptor
+} from "@/config/ThemeNavConfig";
 
 export type NavOverrideRow = {
   id: string;
@@ -17,8 +25,9 @@ export type NavOverrideRow = {
   ctaHref: string;
 };
 
-/** Serialisable nav-link patch (no React nodes — icons are kept from the static config) */
+/** Serialisable nav-link patch (no React nodes — icons are kept from static config) */
 export type NavLinkPatch = { label: string; href: string; iconKey?: string };
+
 /** Serialisable section patch */
 export type SectionPatch = { key: string; enabled: boolean; order: number };
 
@@ -26,6 +35,8 @@ export type SectionPatch = { key: string; enabled: boolean; order: number };
  * Merges a DB override row on top of the static ThemeNavConfig.
  * Icons (React nodes) are always taken from the static config — only
  * label, href, ctaLabel, ctaHref, and section enabled/order are overridable.
+ *
+ * NOTE: Currently unused because DB overrides are disabled.
  */
 export function applyOverride(
   base: ThemeNavConfig,
@@ -34,7 +45,7 @@ export function applyOverride(
   let navLinks = base.navLinks;
   let sections = base.sections;
   let ctaLabel = base.ctaLabel;
-  let ctaHref  = base.ctaHref;
+  let ctaHref = base.ctaHref;
 
   try {
     const linkPatches: NavLinkPatch[] = JSON.parse(row.navLinksJson);
@@ -43,7 +54,9 @@ export function applyOverride(
       if (!patch) return l;
       return { ...l, label: patch.label, href: patch.href };
     });
-  } catch { /* keep base */ }
+  } catch {
+    /* keep base */
+  }
 
   try {
     const sectionPatches: SectionPatch[] = JSON.parse(row.sectionsJson);
@@ -53,22 +66,23 @@ export function applyOverride(
       if (!p) return s;
       return { ...s, enabled: p.enabled, order: p.order };
     });
-    // re-sort by saved order
     sections = [...patched].sort((a, b) => a.order - b.order);
-  } catch { /* keep base */ }
+  } catch {
+    /* keep base */
+  }
 
   if (row.ctaLabel) ctaLabel = row.ctaLabel;
-  if (row.ctaHref)  ctaHref  = row.ctaHref;
+  if (row.ctaHref) ctaHref = row.ctaHref;
 
   return { ...base, navLinks, sections, ctaLabel, ctaHref };
 }
 
 /**
  * Returns a map of presetId → merged ThemeNavConfig.
- * Falls back to the static config if no DB override exists.
+ * Currently returns ONLY the static config because DB overrides
+ * were removed after the Anima cleanup.
  */
 export function useNavOverrides(): Map<string, ThemeNavConfig> {
-  // Static fallback - DB overrides disabled after Anima cleanup
   return useMemo(() => {
     const map = new Map<string, ThemeNavConfig>();
     for (const baseConfig of THEME_NAV_CONFIGS) {
