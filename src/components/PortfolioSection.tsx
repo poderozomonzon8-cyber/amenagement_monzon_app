@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Play } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@/lib/supabase";
+// import { useQuery } from "@/lib/supabase"; // REMOVED
 
 const FILTERS = ["All","Construction","Renovation","Landscaping","Maintenance"];
 

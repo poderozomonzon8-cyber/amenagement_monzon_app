@@ -1,21 +1,16 @@
 /**
- * ╔══════════════════════════════════════════════════════════════╗
- * ║  ROUTER LOCK — Aménagement Monzon Ecosystem                 ║
- * ║  DO NOT modify this file unless explicitly instructed.      ║
- * ║  Adding pages: import below + add a <Route> only.           ║
- * ║  Renaming pages: update both the import AND the Route.      ║
- * ║  Theme changes, UI changes, animation upgrades MUST NOT     ║
- * ║  touch the route tree below.                                ║
- * ╚══════════════════════════════════════════════════════════════╝
+ * ROUTER LOCK — Aménagement Monzon Ecosystem
+ * No modificar estructura de rutas sin indicación explícita.
  */
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
-/* ── Splash ─────────────────────────────────────────────────── */
+/* Splash */
 import SplashScreen from "@/components/SplashScreen";
 import { useSplash } from "@/contexts/SplashContext";
 
-/* ── PUBLIC PAGES ────────────────────────────────────────────── */
+/* Public Pages */
 import HomePage from "@/pages/HomePage";
 import AboutPage from "@/pages/AboutPage";
 import CompanyPage from "@/pages/CompanyPage";
@@ -29,26 +24,25 @@ import AcademyPage from "@/pages/AcademyPage";
 import MaintenancePage from "@/pages/MaintenancePage";
 import AIChatPage from "@/pages/AIChatPage";
 
-/* ── AUTH PAGES ──────────────────────────────────────────────── */
+/* Auth */
 import LoginPage from "@/pages/LoginPage";
 
-/* ── PROTECTED — CLIENT PORTAL ──────────────────────────────── */
+/* Protected — Client Portal */
 import ClientPortalPage from "@/pages/ClientPortalPage";
 
-/* ── PROTECTED — ADMIN PANEL ─────────────────────────────────── */
+/* Protected — Admin Panel */
 import AdminPage from "@/pages/AdminPage";
 
-/* ─────────────────────────────────────────────────────────────
-   AppRoutes — inner component so useSplash can read context
-───────────────────────────────────────────────────────────── */
+/* Internal router component */
 function AppRoutes() {
   const { shouldShowSplash } = useSplash();
 
   return (
     <>
       {shouldShowSplash && <SplashScreen />}
+
       <Routes>
-        {/* ── PUBLIC WEBSITE ──────────────────────────── */}
+        {/* Public Website */}
         <Route path="/"                 element={<HomePage />} />
         <Route path="/about"            element={<AboutPage />} />
         <Route path="/about/company"    element={<CompanyPage />} />
@@ -62,16 +56,16 @@ function AppRoutes() {
         <Route path="/maintenance"      element={<MaintenancePage />} />
         <Route path="/ai-chat"          element={<AIChatPage />} />
 
-        {/* ── AUTH ────────────────────────────────────── */}
+        {/* Auth */}
         <Route path="/login"            element={<LoginPage />} />
         <Route path="/register"         element={<LoginPage mode="register" />} />
         <Route path="/admin/login"      element={<LoginPage mode="admin" />} />
 
-        {/* ── CLIENT PORTAL ───────────────────────────── */}
+        {/* Client Portal */}
         <Route path="/portal"           element={<ClientPortalPage />} />
         <Route path="/portal/:section"  element={<ClientPortalPage />} />
 
-        {/* ── ADMIN PANEL ─────────────────────────────── */}
+        {/* Admin Panel */}
         <Route path="/admin"            element={<AdminPage />} />
         <Route path="/admin/:panel"     element={<AdminPage />} />
       </Routes>
@@ -79,9 +73,7 @@ function AppRoutes() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────
-   App — root with providers
-───────────────────────────────────────────────────────────── */
+/* Root App */
 export default function App() {
   return (
     <HelmetProvider>
@@ -96,4 +88,3 @@ export default function App() {
     </HelmetProvider>
   );
 }
-

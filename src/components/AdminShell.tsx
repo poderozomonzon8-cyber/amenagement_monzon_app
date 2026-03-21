@@ -14,7 +14,7 @@ import {
   ShieldCheck, UserGear, Plug, BellRinging, DeviceMobile,
   X, CheckCircle, Spinner, Star, Buildings, Play,
 } from "@phosphor-icons/react";
-import { useQuery, useMutation } from "@/lib/supabase";
+// import { useQuery, useMutation } from "@/lib/supabase"; // REMOVED
 import { useAppAuth } from "@/contexts/AuthContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import BillingPanel from "@/admin/BillingPanel";

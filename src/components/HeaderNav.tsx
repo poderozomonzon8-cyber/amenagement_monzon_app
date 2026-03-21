@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { List, X, ArrowUpRight, UserCircle, CaretDown } from "@phosphor-icons/react";
 import { useAppAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useQuery } from "@/lib/supabase";
+// import { useQuery } from "@/lib/supabase"; // REMOVED
 import UserMenu from "@/components/auth/UserMenu";
 import LoginModal from "@/components/auth/LoginModal";
 import { WhichAreYourNeedsButton } from "@/components/ServiceSelector";

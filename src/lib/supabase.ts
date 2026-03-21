@@ -1,77 +1,33 @@
 import { createClient } from '@supabase/supabase-js'
 
+// Env vars
 const supabaseUrl = import.meta.env?.VITE_SUPABASE_URL ?? 'https://wzzfuqetmxtiuxuqwedk.supabase.co'
 const supabaseAnonKey = import.meta.env?.VITE_SUPABASE_ANON_KEY ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6emZ1cWV0bXh0aXV4dXF3ZWRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDU5MzcsImV4cCI6MjA4OTUyMTkzN30.reqw6lKZ3vIz8LS9BLB-dVwHeafJvCf29CMsz9xeNFM'
 
+// Client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// Custom hooks to replace Anima SDK
-export async function supabaseQuery(table: string, options: any = {}): Promise<any[]> {
-  let query = supabase.from(table).select('*')
-  
-  if (options.orderBy) {
-    const [field, direction] = options.orderBy.split(':')
-    query = query.order(field, { ascending: direction === 'asc' })
-  } else {
-    query = query.order('created_at', { ascending: false })
-  }
-  
-  if (options.limit) query = query.limit(options.limit)
-  if (options.range) query = query.range(options.range[0], options.range[1])
-  
-  const { data, error } = await query
-  if (error) throw error
-  return data || []
-}
-
-export async function supabaseMutation(table: string, id: string | null, values: any) {
-  if (id) {
-    // Update
-    const { error } = await supabase.from(table).update(values).eq('id', id)
-    if (error) throw error
-  } else {
-    // Create
-    const { data, error } = await supabase.from(table).insert([values]).select().single()
-    if (error) throw error
-    return data
-  }
-}
-
-// Auth
+// Auth: Sign In
 export async function supabaseSignIn(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) throw error
   return data
 }
 
+// Auth: Sign Out
 export async function supabaseSignOut() {
   const { error } = await supabase.auth.signOut()
   if (error) throw error
 }
 
-// Profiles query (for current user)
+// Profiles query
 export async function getUserProfile(userId: string) {
-  const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single()
+
+  if (error) throw error
   return data
 }
-
-// Stub for useMutation (replaces Anima SDK)
-export function useMutation(fn: (...args: any[]) => Promise<any>) {
-  return {
-    mutate: fn,
-    isLoading: false,
-    error: null,
-  };
-}
-
-// Stub for useQuery (replaces Anima SDK)
-export function useQuery<T>(fn: () => Promise<T>) {
-  return {
-    data: null,
-    isLoading: false,
-    error: null,
-    refetch: fn,
-  };
-}
-
-// Already exported above: export const supabase = ...
