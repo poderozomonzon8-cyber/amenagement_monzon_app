@@ -100,14 +100,57 @@ export interface Database {
           portal_access?: boolean
           created_at?: string
         }
+      },
+      projects: {
+        Row: {
+          id: string
+          title: string
+          client_id: string
+          status: string
+          start_date: string
+          end_date: string | null
+          budget: number
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          client_id: string
+          status?: string
+          start_date?: string
+          end_date?: string | null
+          budget?: number
+          notes?: string | null
+          created_at?: string
+        }
+      },
+      leads: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string
+          company: string | null
+          status: string
+          source: string
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone: string
+          company?: string | null
+          status?: string
+          source?: string
+          notes?: string | null
+          created_at?: string
+        }
       }
     }
   }
 }
 
-declare module '@/lib/supabase' {
-  export interface SupabaseQueryResult<T> {
-    data: T[]
-    error: any | null
-  }
-}
+// Remove alias issue - use relative imports in hooks
