@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 export type SplashSettings = {
   enabled: boolean;
   questionText: string;
-  animationSpeed: number; // 1 = normal, 0.5 = slow, 2 = fast
-  particleIntensity: number; // 0–1
+  animationSpeed: number;
+  particleIntensity: number;
   backgroundStyle: "default" | "pure-black" | "charcoal";
   buttons: SplashButton[];
 };
@@ -58,10 +58,14 @@ type SplashContextType = {
   updateSettings: (partial: Partial<SplashSettings>) => void;
   updateButton: (id: string, partial: Partial<SplashButton>) => void;
   resetSettings: () => void;
-  // Runtime splash state
+
+  // Runtime state
   shouldShowSplash: boolean;
   dismissSplash: () => void;
   resetSplashForPreview: () => void;
+
+  // ⭐ Added for manual opening
+  openSplash: () => void;
 };
 
 const SplashCtx = createContext<SplashContextType | null>(null);
@@ -72,10 +76,9 @@ export function SplashProvider({ children }: { children: React.ReactNode }) {
       const stored = localStorage.getItem(SPLASH_SETTINGS_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Merge to preserve any new default buttons
         return { ...DEFAULT_SPLASH_SETTINGS, ...parsed };
       }
-    } catch { /* ignore */ }
+    } catch {}
     return DEFAULT_SPLASH_SETTINGS;
   });
 
@@ -97,7 +100,7 @@ export function SplashProvider({ children }: { children: React.ReactNode }) {
     setSettings(prev => {
       const next = {
         ...prev,
-        buttons: prev.buttons.map(b => b.id === id ? { ...b, ...partial } : b),
+        buttons: prev.buttons.map(b => (b.id === id ? { ...b, ...partial } : b)),
       };
       localStorage.setItem(SPLASH_SETTINGS_KEY, JSON.stringify(next));
       return next;
@@ -119,16 +122,25 @@ export function SplashProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(SPLASH_SEEN_KEY);
   }, []);
 
+  // ⭐ NEW: Allow opening splash manually
+  const openSplash = useCallback(() => {
+    setSplashSeen(false);
+    localStorage.removeItem(SPLASH_SEEN_KEY);
+  }, []);
+
   return (
-    <SplashCtx.Provider value={{
-      settings,
-      updateSettings,
-      updateButton,
-      resetSettings,
-      shouldShowSplash,
-      dismissSplash,
-      resetSplashForPreview,
-    }}>
+    <SplashCtx.Provider
+      value={{
+        settings,
+        updateSettings,
+        updateButton,
+        resetSettings,
+        shouldShowSplash,
+        dismissSplash,
+        resetSplashForPreview,
+        openSplash, // ⭐ Added
+      }}
+    >
       {children}
     </SplashCtx.Provider>
   );

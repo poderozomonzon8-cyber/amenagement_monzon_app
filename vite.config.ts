@@ -18,4 +18,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+
+  // 👇 Aquí integramos mapbox-gl correctamente
+  optimizeDeps: {
+    include: ["mapbox-gl"],
+  },
 });

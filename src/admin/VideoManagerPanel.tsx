@@ -1,6 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react"; 
 import { Play, VideoCamera, Trash, UploadSimple, Check, Eye, Spinner } from "@phosphor-icons/react";
 import { useQuery, useMutation } from "@animaapp/playground-react-sdk";
+
+type MediaAsset = { id: string; fileName: string; fileType: string; url: string };
 
 function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -23,13 +25,15 @@ export default function VideoManagerPanel() {
   const [uploadedPreview, setUploadedPreview] = useState<{ name: string; url: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const { data: assets } = useQuery("MediaAsset", { where: { fileType: { eq: "Video" } } });
+ const { data: assets } = useQuery("MediaAsset", { where: { fileType: { eq: "Video" } } }) as { data?: MediaAsset[] };
   const { create, remove, isPending } = useMutation("MediaAsset");
 
-  const allVideos = [
+  const allVideos = useMemo(() => [
     ...STOCK_VIDEOS,
     ...(assets ?? []).filter(a => a.fileType === "Video").map(a => ({ name: a.fileName, url: a.url, thumb: "" })),
-  ];
+  ], [assets]);
+
+  const loading = uploading || isPending;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -57,6 +61,7 @@ export default function VideoManagerPanel() {
 
   return (
     <div>
+      {/* Header */}
       <div className="mb-6">
         <h1 className="font-headline font-bold text-2xl text-charcoal">Video Manager</h1>
         <p className="font-sans text-sm text-gray-500 mt-1">Manage hero background videos and cinematic assets.</p>
@@ -115,13 +120,13 @@ export default function VideoManagerPanel() {
         <div className="flex gap-2">
           <input type="url"
             value={uploadedPreview ? "" : newUrl}
-            onChange={e => { setUploadedPreview(null); setNewUrl(e.target.value); }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setUploadedPreview(null); setNewUrl(e.target.value); }}
             placeholder="https://… (MP4 or WebM)"
             className="flex-1 px-4 py-2.5 text-sm font-sans bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-charcoal/30"
           />
           <button
             onClick={handleAddUrl}
-            disabled={!newUrl.trim() || isPending}
+            disabled={!newUrl.trim() || loading}
             className="px-4 py-2.5 bg-charcoal text-white text-xs font-sans font-semibold rounded-xl cursor-pointer hover:bg-gray-800 disabled:opacity-40 transition-colors whitespace-nowrap"
           >
             Add to Library
@@ -136,20 +141,30 @@ export default function VideoManagerPanel() {
         </div>
         {allVideos.map((v, i) => (
           <div key={i} className="flex items-center gap-4 px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
-            <div className="w-20 h-12 rounded-lg overflow-hidden bg-surface-0 flex-shrink-0 relative">
-              {v.thumb ? <img src={v.thumb} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center"><VideoCamera size={16} className="text-gray-600" /></div>}
-              <div className="absolute inset-0 flex items-center justify-center"><Play size={14} weight="fill" className="text-white/80" /></div>
+            <div className="w-20 h-12 rounded-lg overflow-hidden bg-surface-0 flex-shrink-0 relative group">
+              {v.thumb
+                ? <img src={v.thumb} className="w-full h-full object-cover" alt="" />
+                : <div className="w-full h-full flex items-center justify-center"><VideoCamera size={16} className="text-gray-600" /></div>
+              }
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Play size={14} weight="fill" className="text-white/80" />
+              </div>
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-sans text-xs font-medium text-charcoal truncate">{v.name}</p>
               <p className="font-mono text-[9px] text-gray-400 truncate mt-0.5">{v.url}</p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <button onClick={() => setPreview(v.url)} className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-blue-600 group/btn transition-colors cursor-pointer">
+              <button
+                onClick={() => setPreview(v.url)}
+                className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-blue-600 group/btn transition-colors cursor-pointer"
+              >
                 <Eye size={13} weight="regular" className="text-gray-500 group-hover/btn:text-white" />
               </button>
-              <button onClick={() => setActiveUrl(v.url)}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${activeUrl === v.url ? "bg-emerald-100 text-emerald-600" : "bg-gray-100 hover:bg-emerald-600 group/btn"}`}>
+              <button
+                onClick={() => setActiveUrl(v.url)}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${activeUrl === v.url ? "bg-emerald-100 text-emerald-600" : "bg-gray-100 hover:bg-emerald-600 group/btn"}`}
+              >
                 <Check size={13} weight={activeUrl === v.url ? "bold" : "regular"} className={activeUrl === v.url ? "" : "text-gray-500 group-hover/btn:text-white"} />
               </button>
             </div>
@@ -159,8 +174,8 @@ export default function VideoManagerPanel() {
 
       {/* Preview modal */}
       {preview && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setPreview(null)}>
-          <div className="bg-black rounded-2xl overflow-hidden max-w-3xl w-full" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 transition-opacity" onClick={() => setPreview(null)}>
+          <div className="bg-black rounded-2xl overflow-hidden max-w-3xl w-full scale-100 transition-transform" onClick={e => e.stopPropagation()}>
             <video src={preview} autoPlay loop muted playsInline controls className="w-full aspect-video" />
             <div className="p-4 flex justify-end">
               <button onClick={() => setPreview(null)} className="px-4 py-2 text-xs font-sans text-white bg-gray-700 rounded-xl cursor-pointer hover:bg-gray-600">Close</button>

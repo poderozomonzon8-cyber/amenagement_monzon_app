@@ -1,14 +1,22 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { List, X, ArrowUpRight, UserCircle, CaretDown } from "@phosphor-icons/react";
-import { useAppAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { List, ArrowUpRight, UserCircle, CaretDown, X } from "@phosphor-icons/react";
 import { useQuery } from "@animaapp/playground-react-sdk";
 import UserMenu from "@/components/auth/UserMenu";
 import LoginModal from "@/components/auth/LoginModal";
 import { WhichAreYourNeedsButton } from "@/components/ServiceSelector";
 import { DEFAULT_NAV_LINKS, ThemeNavLink } from "@/config/ThemeNavConfig";
 import { useNavOverrides } from "@/hooks/useNavOverride";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAppAuth } from "@/contexts/AuthContext";
+import { WhichSiteNeedsButton } from "./SiteSelector";
+
+
+
+
+
+
+
 
 /* ── Collapsible desktop nav with a single dropdown ── */
 function DesktopNav({
@@ -233,24 +241,8 @@ export default function HeaderNav() {
   /* Night mode dims the header slightly */
   const nightFilter = isNightMode ? "brightness(0.88)" : undefined;
 
-  useEffect(() => {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-      document.documentElement.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [mobileOpen]);
 
+  
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -263,20 +255,11 @@ export default function HeaderNav() {
 
 
   useEffect(() => {
-    const handler = (e: MouseEvent | TouchEvent) => {
-      if (mobileRef.current && !mobileRef.current.contains(e.target as Node)) {
-        setMobileOpen(false);
-      }
+    const handler = (e: MouseEvent) => {
+      if (mobileRef.current && !mobileRef.current.contains(e.target as Node)) setMobileOpen(false);
     };
-    const touchHandler = (e: TouchEvent) => handler(e);
-    if (mobileOpen) {
-      document.addEventListener("mousedown", handler);
-      document.addEventListener("touchstart", touchHandler, { passive: false });
-    }
-    return () => {
-      document.removeEventListener("mousedown", handler);
-      document.removeEventListener("touchstart", touchHandler);
-    };
+    if (mobileOpen) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, [mobileOpen]);
 
 
@@ -382,6 +365,7 @@ export default function HeaderNav() {
               >
                 <UserCircle size={14} weight="thin" /> Sign In
               </button>
+
               <Link
                 to="/register"
                 className="px-3 py-2 text-[12px] font-sans font-light tracking-[0.04em] uppercase transition-colors duration-300 focus:outline-none"
@@ -411,7 +395,7 @@ export default function HeaderNav() {
               <UserMenu />
             </>
           )}
-          <WhichAreYourNeedsButton />
+          <WhichSiteNeedsButton />
 
           <Link
             to={ctaHref}
@@ -444,7 +428,15 @@ export default function HeaderNav() {
             aria-expanded={mobileOpen}
           >
             <span className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${mobileOpen ? "opacity-100 rotate-0" : "opacity-0 rotate-90"}`}>
-              <X size={20} weight="regular" />
+              <X
+  size={20}
+  weight="regular"
+  onClick={(e) => {
+    e.stopPropagation();   // evita que el click llegue al botón
+    setMobileOpen(false);  // cierra sin toggle
+  }}
+/>
+
             </span>
             <span className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${mobileOpen ? "opacity-0 -rotate-90" : "opacity-100 rotate-0"}`}>
               <List size={20} weight="regular" />
@@ -455,22 +447,13 @@ export default function HeaderNav() {
 
       {/* Mobile drawer */}
       <div
-        className={`md:hidden fixed inset-0 z-[999] bg-slate-900/95 backdrop-blur-xl transition-transform duration-300 ease-out overscroll-none ${
-          mobileOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        }`}
-        style={{
-          paddingTop: 'env(safe-area-inset-top, 0px)',
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)'
-        }}
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setMobileOpen(false);
-        }}
+        ref={mobileRef}
+        className={["md:hidden overflow-hidden transition-all duration-500 ease-in-out", mobileOpen ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"].join(" ")}
         role="navigation"
         aria-label="Mobile navigation"
       >
-        <div className="glass-dark border-t border-white/5 px-6 py-6 flex flex-col gap-1 flex-1 overflow-auto no-scrollbar">
+        <div className="glass-dark border-t border-white/5 px-6 py-6 flex flex-col gap-1">
           {/* Theme indicator badge */}
-
           {activeNavConfig && (
             <div className="mb-3 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-gold" />
